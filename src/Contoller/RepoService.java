@@ -5,10 +5,18 @@
  */
 package Contoller;
 
+import Model.Kingdom;
+import Model.User;
+
 /**
  *
  * @author MuhammedAbdullah
  */
 public interface RepoService {
-    
+    public User login(String username, String password);
+    public boolean userExists(String username);
+    public Kingdom getKingdom(int kingdomID);
+    public Kingdom kingdomExists(String kingdomName);
+    public Kingdom registerUser(User user, String kingdomName);
+    public int getLastUserID();
 }
