@@ -10,5 +10,14 @@ package Model;
  * @author MuhammedAbdullah
  */
 public class Soldier {
+    private int soldierID;
+    private String soldierType;
     
+    public int getSoldierID() {
+        return soldierID;
+    }
+    public String getSoldierType() {
+        return soldierType;
+    }
 }
+
