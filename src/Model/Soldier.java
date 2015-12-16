@@ -11,13 +11,40 @@ package Model;
  */
 public class Soldier {
     private int soldierID;
-    private String soldierType;
-    
+    private String soldierName;
+    private int power;
+    private int value;
+
     public int getSoldierID() {
         return soldierID;
     }
-    public String getSoldierType() {
-        return soldierType;
+
+    public void setSoldierID(int soldierID) {
+        this.soldierID = soldierID;
+    }
+
+    public String getSoldierName() {
+        return soldierName;
+    }
+
+    public void setSoldierName(String soldierName) {
+        this.soldierName = soldierName;
+    }
+
+    public int getPower() {
+        return power;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }
 

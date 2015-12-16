@@ -6,12 +6,16 @@
 package Contoller;
 
 import Model.Kingdom;
+import Model.Soldier;
 import Model.User;
+import View.Calc;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -113,6 +117,8 @@ public class RepoServiceImpl implements RepoService {
                 kingdom.setKingdomName(rs.getString("kingdom_name"));
                 kingdom.setPoint(rs.getInt("point"));
                 kingdom.setGold(rs.getInt("gold"));
+                kingdom.setAllSoldiers(this.getAllSoldiers(kingdomID));
+                kingdom.setTotalPower(new Calc().getTotalPowerOfKingdom(kingdom));
             }
             return kingdom;
 
@@ -183,6 +189,7 @@ public class RepoServiceImpl implements RepoService {
         return 0;
     }
 
+    @Override
     public int getLastKingdomID() {
         String query = "SELECT max(kingdom_id) as kingdom_id FROM kingdoms";
 
@@ -196,5 +203,103 @@ public class RepoServiceImpl implements RepoService {
         }
         return 0;
     }
+
+    @Override
+    public ArrayList<Soldier> getSoldierTypes() {
+    String query = "SELECT * FROM soldiers";
+    ArrayList<Soldier> soldiers = new ArrayList<>();
+    Soldier soldier=null;
+    ResultSet rs = (ResultSet)executeQuery(query);
+    
+        try {
+            while(rs.next()){
+                soldier  = new Soldier();
+                soldier.setSoldierID(rs.getInt("soldier_id"));
+                soldier.setSoldierName(rs.getString("soldier_name"));
+                soldier.setPower(rs.getInt("power"));
+                soldier.setValue(rs.getInt("value"));
+                soldiers.add(soldier);
+            }   } catch (SQLException ex) {
+            Logger.getLogger(RepoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    return soldiers;
+    }
+    
+    @Override
+    public boolean generateSoldier(int kingdomID, int soldierID, int quantity) {
+        ArrayList<Soldier> soldierTypes = this.getSoldierTypes();
+        int cost=0;
+        int goldQuantityOfKingdom=0;
+        for (int i = 0; i < soldierTypes.size(); i++) {
+            if(soldierID==soldierTypes.get(i).getSoldierID())
+                cost = soldierTypes.get(i).getValue();
+        }
+        cost = cost * quantity;
+        
+        String query= "SELECT gold FROM kingdoms WHERE kingdom_id="+kingdomID;
+        ResultSet rs = (ResultSet)executeQuery(query);
+        try {
+            if(rs.next()){
+                goldQuantityOfKingdom=rs.getInt("gold");
+                if(goldQuantityOfKingdom<cost)
+                    return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RepoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        query = "SELECT quantity FROM armies WHERE kingdom_id="+kingdomID+" and soldier_id="+soldierID;
+        rs = (ResultSet)executeQuery(query);
+        int lastQuantity=0;
+        try {
+            if(rs.next()){
+                lastQuantity = rs.getInt("quantity");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RepoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(lastQuantity==0)
+        query = "INSERT INTO armies (kingdom_id,soldier_id,quantity) VALUES("+kingdomID+","+soldierID+","+(quantity)+")";
+        else{
+        query = "UPDATE armies SET quantity="+(lastQuantity+quantity)+" WHERE kingdom_id="+kingdomID+" and soldier_id="+soldierID;
+        }
+        executeQuery(query);
+        
+        query = "UPDATE kingdoms SET gold="+(goldQuantityOfKingdom-cost)+" WHERE kingdom_id="+kingdomID;
+        
+        executeQuery(query);
+        
+        return true;
+    }
+
+    @Override
+    public HashMap<Soldier, Integer> getAllSoldiers(int kingdomID) {
+        
+        ArrayList<Soldier> soldierTypes = this.getSoldierTypes();
+        
+        HashMap<Soldier,Integer> allSoldiers = new HashMap<Soldier, Integer>();
+      
+        String query = "SELECT soldier_id, quantity FROM armies WHERE kingdom_id="+kingdomID;
+        
+        ResultSet rs = (ResultSet)executeQuery(query);
+        try {
+            while(rs.next()){
+                int soldierID = rs.getInt("soldier_id");
+                int quantity = rs.getInt("quantity");
+                for (int i = 0; i < soldierTypes.size(); i++) {
+                    if(soldierID==soldierTypes.get(i).getSoldierID())
+                        allSoldiers.put(soldierTypes.get(i), quantity);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RepoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return allSoldiers;
+    }
+
+    
+
+
 
 }

@@ -6,7 +6,10 @@
 package Contoller;
 
 import Model.Kingdom;
+import Model.Soldier;
 import Model.User;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -19,4 +22,8 @@ public interface RepoService {
     public Kingdom kingdomExists(String kingdomName);
     public Kingdom registerUser(User user, String kingdomName);
     public int getLastUserID();
+    public int getLastKingdomID();
+    public ArrayList<Soldier> getSoldierTypes();
+    public boolean generateSoldier(int kingdomID,int soldierID, int quantity);
+    public HashMap<Soldier,Integer> getAllSoldiers(int kingdomID);
 }

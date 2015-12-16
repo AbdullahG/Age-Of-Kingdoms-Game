@@ -1,6 +1,8 @@
 
 import Contoller.RepoService;
 import Contoller.RepoServiceImpl;
+import Model.Soldier;
+import java.util.ArrayList;
 
 
 /*
@@ -25,6 +27,7 @@ public class MainFrame extends javax.swing.JFrame {
     static MainFrame mf;
     static GameFrame gf;
     static RegisterFrame rf;
+    static GenerateSoldierFrame gsf;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,6 +43,11 @@ public class MainFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 0, 102));
@@ -100,6 +108,10 @@ public class MainFrame extends javax.swing.JFrame {
         mf.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -137,11 +149,15 @@ public class MainFrame extends javax.swing.JFrame {
                 lf = new LoginFrame();
                 gf = new GameFrame();
                 rf = new RegisterFrame();
+                gsf = new GenerateSoldierFrame();
+                
                 centerAllFrames();
                 
                 gf.setVisible(false);
                 lf.setVisible(false);
                 mf.setVisible(true);
+                rf.setVisible(false);
+                gsf.setVisible(false);
             }
         });
     }
@@ -155,6 +171,8 @@ public class MainFrame extends javax.swing.JFrame {
         gf.setLocationRelativeTo(null);
         rf.pack();
         rf.setLocationRelativeTo(null);
+        gsf.pack();
+        gsf.setLocationRelativeTo(null);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

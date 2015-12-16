@@ -5,6 +5,8 @@
  */
 package Model;
 
+import java.util.HashMap;
+
 /**
  *
  * @author MuhammedAbdullah
@@ -15,7 +17,9 @@ public class Kingdom {
     private String kingdomName;
     private int point;
     private int gold;
-
+    private HashMap<Soldier,Integer> allSoldiers;
+    private int totalPower;
+    
     public int getKingdomID() {
         return kingdomID;
     }
@@ -46,6 +50,22 @@ public class Kingdom {
 
     public void setGold(int gold) {
         this.gold = gold;
+    }
+
+    public HashMap<Soldier, Integer> getAllSoldiers() {
+        return allSoldiers;
+    }
+
+    public void setAllSoldiers(HashMap<Soldier, Integer> allSoldiers) {
+        this.allSoldiers = allSoldiers;
+    }
+
+    public int getTotalPower() {
+        return totalPower;
+    }
+
+    public void setTotalPower(int totalPower) {
+        this.totalPower = totalPower;
     }
 
 }
