@@ -23,4 +23,19 @@ public class Calc {
         return totalPower;
     }
     
+    public void war(Kingdom first, Kingdom second){
+        
+       if(first.getTotalPower()>second.getTotalPower()){
+           
+           double loseOfFirst = (double)second.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
+           
+           loseOfFirst = first.getTotalPower() * loseOfFirst;
+           
+           
+       }else if(second.getTotalPower()>first.getTotalPower()){
+           
+       }else{
+           
+       }
+    }
 }

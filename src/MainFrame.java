@@ -28,6 +28,7 @@ public class MainFrame extends javax.swing.JFrame {
     static GameFrame gf;
     static RegisterFrame rf;
     static GenerateSoldierFrame gsf;
+    static WarFrame wf;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -150,6 +151,7 @@ public class MainFrame extends javax.swing.JFrame {
                 gf = new GameFrame();
                 rf = new RegisterFrame();
                 gsf = new GenerateSoldierFrame();
+                wf = new WarFrame();
                 
                 centerAllFrames();
                 
@@ -158,6 +160,7 @@ public class MainFrame extends javax.swing.JFrame {
                 mf.setVisible(true);
                 rf.setVisible(false);
                 gsf.setVisible(false);
+                wf.setVisible(false);
             }
         });
     }
@@ -173,6 +176,8 @@ public class MainFrame extends javax.swing.JFrame {
         rf.setLocationRelativeTo(null);
         gsf.pack();
         gsf.setLocationRelativeTo(null);
+       wf.pack();
+       wf.setLocationRelativeTo(null);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

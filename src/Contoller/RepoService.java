@@ -26,4 +26,5 @@ public interface RepoService {
     public ArrayList<Soldier> getSoldierTypes();
     public boolean generateSoldier(int kingdomID,int soldierID, int quantity);
     public HashMap<Soldier,Integer> getAllSoldiers(int kingdomID);
+    public ArrayList<Kingdom> getAllKingdoms();
 }

@@ -298,6 +298,30 @@ public class RepoServiceImpl implements RepoService {
         return allSoldiers;
     }
 
+    @Override
+    public ArrayList<Kingdom> getAllKingdoms() {
+        String query = "SELECT * FROM kingdoms";
+        ResultSet rs = (ResultSet)executeQuery(query);
+        ArrayList<Kingdom> allKingdoms = new ArrayList<>();
+        
+        Kingdom tmp;
+        try {
+            while(rs.next()){
+                tmp = new Kingdom();
+                tmp.setKingdomID(rs.getInt("kingdom_id"));
+                tmp.setKingdomName(rs.getString("kingdom_name"));
+                tmp.setGold(rs.getInt("gold"));
+                tmp.setPoint(rs.getInt("point"));
+                tmp.setAllSoldiers(this.getAllSoldiers(tmp.getKingdomID()));
+                tmp.setTotalPower(new Calc().getTotalPowerOfKingdom(tmp));
+                allKingdoms.add(tmp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RepoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return allKingdoms;
+    }
+
     
 
 
