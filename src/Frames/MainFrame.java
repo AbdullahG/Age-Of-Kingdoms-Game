@@ -1,3 +1,5 @@
+package Frames;
+
 
 import Contoller.RepoService;
 import Contoller.RepoServiceImpl;
@@ -22,13 +24,14 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
     }
-
-    static LoginFrame lf;
-    static MainFrame mf;
-    static GameFrame gf;
-    static RegisterFrame rf;
-    static GenerateSoldierFrame gsf;
-    static WarFrame wf;
+    
+   
+    public static LoginFrame lf;
+    public static MainFrame mf;
+    public static GameFrame gf;
+    public static RegisterFrame rf;
+    public static GenerateSoldierFrame gsf;
+    public static WarFrame wf;
 
     /**
      * This method is called from within the constructor to initialize the form.

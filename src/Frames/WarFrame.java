@@ -1,7 +1,10 @@
+package Frames;
+
 
 import Contoller.RepoService;
 import Contoller.RepoServiceImpl;
 import Model.Kingdom;
+import View.Calc;
 import java.util.ArrayList;
 
 /*
@@ -30,7 +33,8 @@ public class WarFrame extends javax.swing.JFrame {
         allKingdoms = rp.getAllKingdoms();
         Object[] obj = new Object[allKingdoms.size()];
         for (int i = 0; i < obj.length; i++) {
-            obj[i] = allKingdoms.get(i).getKingdomName();
+            if(!allKingdoms.get(i).getKingdomName().equals(GameFrame.kingdom.getKingdomName()))
+                obj[i] = allKingdoms.get(i).getKingdomName();
         }
         jList1.setListData(obj);
     }
@@ -92,10 +96,28 @@ public class WarFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        RepoService rp = new RepoServiceImpl();
+        String opponentKingdomName = (String) jList1.getSelectedValue();
+        Kingdom opponentKingdom = rp.kingdomExists(opponentKingdomName); 
+        System.out.println(opponentKingdom.getKingdomName());
         
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
+    private void runGame(Kingdom opKingdom){
+       
+        
+        Calc.war(GameFrame.kingdom, opKingdom);
+        
+        double winnerRate;
+        double loserRate;
+        if(GameFrame.kingdom.getTotalPower() > opKingdom.getTotalPower()){
+            winnerRate = opKingdom.getTotalPower()/(GameFrame.kingdom.getTotalPower() + opKingdom.getTotalPower());
+        }
+        else {
+            loserRate = GameFrame.kingdom.getTotalPower()/(GameFrame.kingdom.getTotalPower() + opKingdom.getTotalPower());
+        }
+        
+    }
     /**
      * @param args the command line arguments
      */

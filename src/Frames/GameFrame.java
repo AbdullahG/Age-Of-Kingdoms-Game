@@ -1,3 +1,5 @@
+package Frames;
+
 
 import Contoller.RepoService;
 import Contoller.RepoServiceImpl;
@@ -21,7 +23,7 @@ public class GameFrame extends javax.swing.JFrame {
      */
     public static Kingdom kingdom = null;
     public ArrayList<Soldier> allSoldierTypes = new ArrayList<>();
-    final public RepoService repoService = new RepoServiceImpl();
+    final static public RepoService repoService = new RepoServiceImpl();
 
     public GameFrame() {
         initComponents();

@@ -5,8 +5,11 @@
  */
 package View;
 
+import Frames.*;
 import Model.Kingdom;
 import Model.Soldier;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -23,16 +26,47 @@ public class Calc {
         return totalPower;
     }
     
-    public void war(Kingdom first, Kingdom second){
+    public static void war(Kingdom first, Kingdom second){
         
-       if(first.getTotalPower()>second.getTotalPower()){
+        double loseOfWinner;
+        double loseOfLoser;
+        
+        ArrayList<Soldier> soldierTypes = GameFrame.repoService.getSoldierTypes();;
+        
+        HashMap<Soldier, Integer> newAllSoldiersOfWinner = new HashMap<Soldier, Integer>();
+        HashMap<Soldier, Integer> newAllSoldiersOfLoser = new HashMap<Soldier, Integer>();
            
-           double loseOfFirst = (double)second.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
+        if(first.getTotalPower()>second.getTotalPower()){
            
-           loseOfFirst = first.getTotalPower() * loseOfFirst;
+           loseOfWinner = (double)second.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
+           loseOfLoser = (double)first.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
+ 
            
            
-       }else if(second.getTotalPower()>first.getTotalPower()){
+           for(int i = 0; i < soldierTypes.size(); i++){
+               
+                int numberOfSoldiersOfWinner = (int)(first.getAllSoldiers().get(soldierTypes.get(i)) * loseOfWinner);
+                int numberOfSoldiersOfLoser = (int)(second.getAllSoldiers().get(soldierTypes.get(i)) * loseOfLoser);
+          
+                newAllSoldiersOfWinner.put(soldierTypes.get(i), numberOfSoldiersOfWinner);
+                newAllSoldiersOfLoser.put(soldierTypes.get(i), numberOfSoldiersOfLoser);
+           
+           }
+           
+       }
+       else if(second.getTotalPower()>first.getTotalPower()){
+           
+           loseOfWinner = (double)first.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
+           loseOfLoser = (double)second.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
+           
+           for(int i = 0; i < soldierTypes.size(); i++){
+               
+                int numberOfSoldiersOfWinner = (int)(second.getAllSoldiers().get(soldierTypes.get(i)) * loseOfWinner);
+                int numberOfSoldiersOfLoser = (int)(first.getAllSoldiers().get(soldierTypes.get(i)) * loseOfLoser);
+                
+                newAllSoldiersOfWinner.put(soldierTypes.get(i), numberOfSoldiersOfWinner);
+                newAllSoldiersOfLoser.put(soldierTypes.get(i), numberOfSoldiersOfLoser);
+           }
            
        }else{
            

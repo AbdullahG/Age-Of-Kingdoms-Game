@@ -28,7 +28,7 @@ public class RepoServiceImpl implements RepoService {
     static Connection connection = null;
     static String DBurl = "jdbc:oracle:thin:@localhost:1521:XE";
     static String DBusername = "KINGDOM";
-    static String DBpassword = "123ewqqwe";
+    static String DBpassword = "123456";
 
     static {
         connectToDB();
