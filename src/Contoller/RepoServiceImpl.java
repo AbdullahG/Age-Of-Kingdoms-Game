@@ -5,6 +5,7 @@
  */
 package Contoller;
 
+import Frames.GameFrame;
 import Model.Kingdom;
 import Model.Soldier;
 import Model.User;
@@ -47,7 +48,7 @@ public class RepoServiceImpl implements RepoService {
         }
     }
 
-    public Object executeQuery(String query) {
+    public static Object executeQuery(String query) {
         Statement st = null;
         Object rSet = null;
 
@@ -203,7 +204,6 @@ public class RepoServiceImpl implements RepoService {
         }
         return 0;
     }
-
     @Override
     public ArrayList<Soldier> getSoldierTypes() {
     String query = "SELECT * FROM soldiers";
@@ -286,6 +286,7 @@ public class RepoServiceImpl implements RepoService {
             while(rs.next()){
                 int soldierID = rs.getInt("soldier_id");
                 int quantity = rs.getInt("quantity");
+                
                 for (int i = 0; i < soldierTypes.size(); i++) {
                     if(soldierID==soldierTypes.get(i).getSoldierID())
                         allSoldiers.put(soldierTypes.get(i), quantity);
@@ -322,6 +323,27 @@ public class RepoServiceImpl implements RepoService {
         return allKingdoms;
     }
 
+    @Override
+    public void updateSoldierNumbers(Kingdom kngdm, HashMap<Soldier, Integer> soldierHashMap){
+        
+        ArrayList<Soldier> soldierTypes = GameFrame.repoService.getSoldierTypes();
+        ResultSet rs;
+        ArrayList<Integer> valueList = new ArrayList<Integer>();
+        for (int value: soldierHashMap.values()){
+            valueList.add(value);
+        }
+        for(int i = 0; i < soldierTypes.size(); i++){
+            
+            
+            String query = "UPDATE armies set quantity = " + valueList.get(i) + " where soldier_id = " + soldierTypes.get(i).getSoldierID() + " and kingdom_id = " + kngdm.getKingdomID();
+            executeQuery(query);
+            
+            
+            
+            
+        }
+        
+    }
     
 
 

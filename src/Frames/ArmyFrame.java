@@ -1,10 +1,18 @@
 package Frames;
 
+import Model.Soldier;
+import java.util.HashMap;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 
 /**
  *
@@ -28,17 +36,55 @@ public class ArmyFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Soldier", "Power", "Value", "Quantity"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
+            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(72, 72, 72)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         pack();
@@ -78,7 +124,38 @@ public class ArmyFrame extends javax.swing.JFrame {
             }
         });
     }
+    public void setArmy(int kingdomID){
+        DefaultTableModel dtm = new DefaultTableModel();
+        HashMap<Soldier, Integer> allsoldiers = GameFrame.repoService.getAllSoldiers(kingdomID);
+        
+        String[] coloumnNames = {
+            "Soldier", "Power", "Value", "Quantity"
+        };
+        String[][] data;
+        data = new String[allsoldiers.size()][4];
+        int c = 0 ;
+        System.out.println("Kingdom id: "+kingdomID);
+        for (Soldier key : allsoldiers.keySet()) {
+            System.out.println(key.getSoldierName()+" "+ allsoldiers.get(key));
+            data[c][0] = key.getSoldierName();
+            data[c][1] = ""+key.getPower();
+            data[c][2] = ""+key.getValue();
+            data[c][3] = ""+allsoldiers.get(key);
+            dtm.addRow(data[c]);
+            c++;
+        }
+        jTable1.setModel(dtm);
+        //jTable1 = new JTable(data, coloumnNames);
+        System.out.println(jTable1.contains(1,1));
+        jTable1.setModel(dtm);
+        dtm.fireTableDataChanged();
+        //apo model olusturup setledik içerigi alıyor fakat gosteremıyor
+        
+                
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

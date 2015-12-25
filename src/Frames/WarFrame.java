@@ -99,23 +99,16 @@ public class WarFrame extends javax.swing.JFrame {
         RepoService rp = new RepoServiceImpl();
         String opponentKingdomName = (String) jList1.getSelectedValue();
         Kingdom opponentKingdom = rp.kingdomExists(opponentKingdomName); 
-        System.out.println(opponentKingdom.getKingdomName());
+        //System.out.println(opponentKingdom.getKingdomName());
+        //calculatetotalpower
+        runGame(opponentKingdom);
         
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void runGame(Kingdom opKingdom){
        
-        
+        System.out.print(" ---->"+opKingdom.getGold()+" --->"+opKingdom.getTotalPower()+" "+opKingdom.getKingdomID()+"--<");     
         Calc.war(GameFrame.kingdom, opKingdom);
-        
-        double winnerRate;
-        double loserRate;
-        if(GameFrame.kingdom.getTotalPower() > opKingdom.getTotalPower()){
-            winnerRate = opKingdom.getTotalPower()/(GameFrame.kingdom.getTotalPower() + opKingdom.getTotalPower());
-        }
-        else {
-            loserRate = GameFrame.kingdom.getTotalPower()/(GameFrame.kingdom.getTotalPower() + opKingdom.getTotalPower());
-        }
         
     }
     /**
