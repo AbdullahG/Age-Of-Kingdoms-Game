@@ -128,6 +128,10 @@ public class ArmyFrame extends javax.swing.JFrame {
     public void setArmy(int kingdomID){
         HashMap<Soldier, Integer> allsoldiers = GameFrame.repoService.getAllSoldiers(kingdomID);
         DefaultTableModel defaultTableModel = (DefaultTableModel)jTable1.getModel();
+        
+        for (int i = 0; i < defaultTableModel.getRowCount();) {
+            defaultTableModel.removeRow(0);
+        }
         for (Soldier key : allsoldiers.keySet()) {
             defaultTableModel.addRow(new Object[]{key.getSoldierName(),key.getPower(),key.getValue(),allsoldiers.get(key)});
         }
