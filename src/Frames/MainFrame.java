@@ -3,8 +3,6 @@ package Frames;
 
 import Contoller.RepoService;
 import Contoller.RepoServiceImpl;
-import Model.Soldier;
-import java.util.ArrayList;
 
 
 /*

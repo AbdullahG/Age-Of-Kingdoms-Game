@@ -5,6 +5,7 @@
  */
 package View;
 
+import Contoller.RepoServiceImpl;
 import Frames.*;
 import Model.Kingdom;
 import Model.Soldier;
@@ -25,7 +26,18 @@ public class Calc {
         }
         return totalPower;
     }
-    
+    public static void war2(Kingdom first, Kingdom second){
+        int firstPower = first.getTotalPower();
+        int secondPower = second.getTotalPower();
+        ArrayList<Soldier> soldierTypes = GameFrame.repoService.getSoldierTypes();
+        
+        if(firstPower>secondPower){
+            double rate = ((double)secondPower)/(firstPower+secondPower);
+            rate = Math.pow(rate, 1.5);
+            
+        }
+        
+    }
     public static void war(Kingdom first, Kingdom second){
         
         double loseOfWinner;

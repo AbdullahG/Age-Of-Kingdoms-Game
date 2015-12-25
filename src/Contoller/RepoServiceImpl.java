@@ -29,7 +29,7 @@ public class RepoServiceImpl implements RepoService {
     static Connection connection = null;
     static String DBurl = "jdbc:oracle:thin:@localhost:1521:XE";
     static String DBusername = "KINGDOM";
-    static String DBpassword = "123456";
+    static String DBpassword = "123ewqqwe";
 
     static {
         connectToDB();
@@ -251,14 +251,16 @@ public class RepoServiceImpl implements RepoService {
         query = "SELECT quantity FROM armies WHERE kingdom_id="+kingdomID+" and soldier_id="+soldierID;
         rs = (ResultSet)executeQuery(query);
         int lastQuantity=0;
+        boolean alreadyInserted = false;
         try {
             if(rs.next()){
                 lastQuantity = rs.getInt("quantity");
+                alreadyInserted=true;
             }
         } catch (SQLException ex) {
             Logger.getLogger(RepoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(lastQuantity==0)
+        if(lastQuantity==0 && !alreadyInserted)
         query = "INSERT INTO armies (kingdom_id,soldier_id,quantity) VALUES("+kingdomID+","+soldierID+","+(quantity)+")";
         else{
         query = "UPDATE armies SET quantity="+(lastQuantity+quantity)+" WHERE kingdom_id="+kingdomID+" and soldier_id="+soldierID;
