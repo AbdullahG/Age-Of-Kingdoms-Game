@@ -278,7 +278,9 @@ public class RepoServiceImpl implements RepoService {
         ArrayList<Soldier> soldierTypes = this.getSoldierTypes();
         
         HashMap<Soldier,Integer> allSoldiers = new HashMap<Soldier, Integer>();
-      
+        for (int i = 0; i < soldierTypes.size(); i++) {
+            allSoldiers.put(soldierTypes.get(i), 0);
+        }
         String query = "SELECT soldier_id, quantity FROM armies WHERE kingdom_id="+kingdomID;
         
         ResultSet rs = (ResultSet)executeQuery(query);
@@ -289,7 +291,7 @@ public class RepoServiceImpl implements RepoService {
                 
                 for (int i = 0; i < soldierTypes.size(); i++) {
                     if(soldierID==soldierTypes.get(i).getSoldierID())
-                        allSoldiers.put(soldierTypes.get(i), quantity);
+                        allSoldiers.replace(soldierTypes.get(i), quantity);
                 }
             }
         } catch (SQLException ex) {
