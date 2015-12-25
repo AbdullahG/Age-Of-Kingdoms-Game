@@ -2,9 +2,6 @@ package Frames;
 
 import Model.Soldier;
 import java.util.HashMap;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -40,15 +37,15 @@ public class ArmyFrame extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Soldier", "Power", "Value", "Quantity"
@@ -90,6 +87,10 @@ public class ArmyFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        setDefaultCloseOperation(ArmyFrame.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -125,32 +126,11 @@ public class ArmyFrame extends javax.swing.JFrame {
         });
     }
     public void setArmy(int kingdomID){
-        DefaultTableModel dtm = new DefaultTableModel();
         HashMap<Soldier, Integer> allsoldiers = GameFrame.repoService.getAllSoldiers(kingdomID);
-        
-        String[] coloumnNames = {
-            "Soldier", "Power", "Value", "Quantity"
-        };
-        String[][] data;
-        data = new String[allsoldiers.size()][4];
-        int c = 0 ;
-        System.out.println("Kingdom id: "+kingdomID);
+        DefaultTableModel defaultTableModel = (DefaultTableModel)jTable1.getModel();
         for (Soldier key : allsoldiers.keySet()) {
-            System.out.println(key.getSoldierName()+" "+ allsoldiers.get(key));
-            data[c][0] = key.getSoldierName();
-            data[c][1] = ""+key.getPower();
-            data[c][2] = ""+key.getValue();
-            data[c][3] = ""+allsoldiers.get(key);
-            dtm.addRow(data[c]);
-            c++;
+            defaultTableModel.addRow(new Object[]{key.getSoldierName(),key.getPower(),key.getValue(),allsoldiers.get(key)});
         }
-        jTable1.setModel(dtm);
-        //jTable1 = new JTable(data, coloumnNames);
-        System.out.println(jTable1.contains(1,1));
-        jTable1.setModel(dtm);
-        dtm.fireTableDataChanged();
-        //apo model olusturup setledik içerigi alıyor fakat gosteremıyor
-        
                 
     }
 
