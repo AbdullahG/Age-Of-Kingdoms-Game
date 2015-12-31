@@ -1,26 +1,25 @@
-package Frames;
-
-import Model.Soldier;
-import java.util.HashMap;
-import javax.swing.table.DefaultTableModel;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package Frames;
 
+import Model.Kingdom;
+import View.Calc;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author MuhammedAbdullah
+ * @author mesihmalikkuru
  */
-public class ArmyFrame extends javax.swing.JFrame {
+public class WarLogFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form ArmyFrame
+     * Creates new form WarLogFrame
      */
-    public ArmyFrame() {
+    public WarLogFrame() {
         initComponents();
     }
 
@@ -51,52 +50,39 @@ public class ArmyFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Soldier", "Power", "Value", "Quantity"
+                "Winner", "Loser", "Date", "Your Loss", "Gold Earn"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        setDefaultCloseOperation(ArmyFrame.DISPOSE_ON_CLOSE);
-    }//GEN-LAST:event_formWindowClosing
-
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        setDefaultCloseOperation(ArmyFrame.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -115,36 +101,34 @@ public class ArmyFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ArmyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WarLogFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ArmyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WarLogFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ArmyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WarLogFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ArmyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WarLogFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ArmyFrame().setVisible(true);
+                new WarLogFrame().setVisible(true);
             }
         });
     }
-    public void setArmy(int kingdomID){
-        HashMap<Soldier, Integer> allsoldiers = GameFrame.repoService.getAllSoldiers(kingdomID);
+    
+    public void setWarLogs(Kingdom kng){
         DefaultTableModel defaultTableModel = (DefaultTableModel)jTable1.getModel();
         
-        for (int i = 0; i < defaultTableModel.getRowCount();) {
-            defaultTableModel.removeRow(0);
-        }
-        for (Soldier key : allsoldiers.keySet()) {
-            defaultTableModel.addRow(new Object[]{key.getSoldierName(),key.getPower(),key.getValue(),allsoldiers.get(key)});
-        }
-                
+        Object list[][];
+        list =  GameFrame.repoService.getWarLog(kng);
+        for(int i = 0; i < list.length; i++)
+            defaultTableModel.addRow(list[i]);
+            
+       
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

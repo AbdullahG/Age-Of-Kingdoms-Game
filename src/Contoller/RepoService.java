@@ -28,4 +28,6 @@ public interface RepoService {
     public HashMap<Soldier,Integer> getAllSoldiers(int kingdomID);
     public ArrayList<Kingdom> getAllKingdoms();
     public void updateSoldierNumbers(Kingdom kngdm, HashMap<Soldier, Integer> soldierHashMap);
+    public void insertWarLog(Kingdom winner, Kingdom loser, int point, int gold, int winner_soldier_loss, int loser_soldier_loss );
+    public Object[][] getWarLog(Kingdom kng);
 }

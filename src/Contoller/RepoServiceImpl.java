@@ -12,10 +12,13 @@ import Model.User;
 import View.Calc;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +32,7 @@ public class RepoServiceImpl implements RepoService {
     static Connection connection = null;
     static String DBurl = "jdbc:oracle:thin:@localhost:1521:XE";
     static String DBusername = "KINGDOM";
-    static String DBpassword = "123ewqqwe";
+    static String DBpassword = "123456";
 
     static {
         connectToDB();
@@ -347,6 +350,70 @@ public class RepoServiceImpl implements RepoService {
             
         }
         
+    }
+    @Override
+    public void insertWarLog(Kingdom winner, Kingdom loser, int point, int gold, int winner_soldier_loss, int loser_soldier_loss ){
+        String query = "insert into WAR_REGISTERS values(?,?,?,?,?,?,?,?)";
+        //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        java.util.Date date = new Date();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, 0);
+            stmt.setInt(2, winner.getKingdomID());
+            stmt.setInt(3, loser.getKingdomID());
+            stmt.setInt(4, point);
+            stmt.setInt(5, gold);
+            stmt.setInt(6, winner_soldier_loss);
+            stmt.setInt(7, loser_soldier_loss);
+            stmt.setDate(8, new java.sql.Date(date.getTime()));
+            
+            stmt.executeUpdate(); 
+            stmt.close();
+         
+        } catch (SQLException ex) {
+            Logger.getLogger(RepoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    @Override
+    public Object[][] getWarLog(Kingdom kng){
+        String query = "SELECT * from WAR_REGISTERS where winner_id = " + kng.getKingdomID() + " or loser_id = " + kng.getKingdomID();
+        ResultSet rs = (ResultSet) executeQuery(query);
+        Object[][] list = new Object[20][5];
+        try {
+            int i = 0;
+            while(rs.next() && i < 20){
+                //0 winner name
+                //1 loser name
+                //2 date
+                //3 loss soldier
+                //4 earn gold
+                int id = rs.getInt("winner_id");
+               
+                Kingdom tmp = getKingdom(id);
+                String kngName = tmp.getKingdomName();
+                list[i][0] = kngName;
+                id = rs.getInt("loser_id");
+                tmp = getKingdom(id);
+                kngName = tmp.getKingdomName();
+                list[i][1] = kngName;
+                Date date = rs.getDate("war_date"); // string olarak alınabiliyorsa böyle kalsın. alınamıyorsa date e çevrilsin.
+                list[i][2] = date;
+                int loss = rs.getInt("winner_soldier_loss");
+                list[i][3] = loss;
+                list[i][4] = rs.getInt("gold");
+                
+                //apo bunları bi check et. kontrol et. bizde trigger olmadığı için test edemiyoruz.
+                
+                
+                i++;
+            }
+            
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(RepoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
     
 

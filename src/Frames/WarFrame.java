@@ -6,6 +6,7 @@ import Contoller.RepoServiceImpl;
 import Model.Kingdom;
 import View.Calc;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -53,6 +54,14 @@ public class WarFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -94,7 +103,7 @@ public class WarFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+ 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         RepoService rp = new RepoServiceImpl();
         String opponentKingdomName = (String) jList1.getSelectedValue();
@@ -103,12 +112,31 @@ public class WarFrame extends javax.swing.JFrame {
         //calculatetotalpower
         runGame(opponentKingdom);
         
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        setDefaultCloseOperation(WarFrame.DISPOSE_ON_CLOSE);
+        
+    }//GEN-LAST:event_formWindowClosing
     
     private void runGame(Kingdom opKingdom){
        
-        System.out.print(" ---->"+opKingdom.getGold()+" --->"+opKingdom.getTotalPower()+" "+opKingdom.getKingdomID()+"--<");     
-        Calc.war(GameFrame.kingdom, opKingdom);
+        //System.out.print(" ---->"+opKingdom.getGold()+" --->"+opKingdom.getTotalPower()+" "+opKingdom.getKingdomID()+"--<");     
+        if(Calc.war(GameFrame.kingdom, opKingdom) == 1){
+            //you win
+            JOptionPane.showMessageDialog(rootPane, "Congratulations! You won the War!");
+        }
+        else {
+            //you lost
+            JOptionPane.showMessageDialog(rootPane, "Opps! Sorry, You lost the War!");
+        }
         
     }
     /**
@@ -145,6 +173,7 @@ public class WarFrame extends javax.swing.JFrame {
             }
         });
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

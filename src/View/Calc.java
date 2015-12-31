@@ -38,10 +38,13 @@ public class Calc {
         }
         
     }
-    public static void war(Kingdom first, Kingdom second){
+    public static int war(Kingdom first, Kingdom second){
         
         double loseOfWinner;
         double loseOfLoser;
+        
+        int deadSoldiersWinner = 0;
+        int deadSoldiersLoser = 0;
        
         ArrayList<Soldier> soldierTypes = GameFrame.repoService.getSoldierTypes();
         
@@ -60,20 +63,18 @@ public class Calc {
             loseOfWinner = (double)second.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
             loseOfLoser = (double)first.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
            
-           /* System.out.println(loseOfWinner);
-            System.out.println(soldierTypes.get(1).getSoldierName());
-            System.out.println(first.getAllSoldiers().get(soldierTypes.get(0)));
-            System.out.println(GameFrame.repoService.getAllSoldiers(first.getKingdomID()));
-            System.out.println(GameFrame.repoService.getSoldierTypes().get(0));*/
+         
            
             for (Integer value: GameFrame.repoService.getAllSoldiers(first.getKingdomID()).values()) {
-               int numberOfSoldiersOfWinner = (int) (value * loseOfLoser);
+               int numberOfSoldiersOfWinner = (int) (value * loseOfLoser); 
+               deadSoldiersWinner += (value - numberOfSoldiersOfWinner); //******** ********
                soldierWinnerIntList.add(numberOfSoldiersOfWinner);
                //System.out.println("numberofsoldierofwinner = " + numberOfSoldiersOfWinner+" "+first.getKingdomID());
                
             }
             for (Integer value: GameFrame.repoService.getAllSoldiers(second.getKingdomID()).values()) {
                int numberOfSoldiersOfLoser = (int) (value * loseOfWinner);
+               deadSoldiersLoser += (value - numberOfSoldiersOfLoser);
                soldierLoserIntList.add(numberOfSoldiersOfLoser);
                //System.out.println("numberofsoldierofloser = " + numberOfSoldiersOfLoser+" "+second.getKingdomID());
             }
@@ -89,22 +90,36 @@ public class Calc {
             //System.out.println("???");
             GameFrame.repoService.updateSoldierNumbers(first, newAllSoldiersOfWinner);
             GameFrame.repoService.updateSoldierNumbers(second, newAllSoldiersOfLoser);
-            //System.out.println("***");
+            
+            //kazanana point eklenecek
+            int point = deadSoldiersLoser * 2;//eklenecek olan point 
+            first.setPoint(point + first.getPoint());
+            //kazanana gold eklenecek
+            int gold = 20 * deadSoldiersWinner;//eklenecek olan gold
+            first.setGold(gold + first.getGold());
+             
+            //***** GAME FRAME UPDATE VIEWWWWW c********** 
+            MainFrame.gf.startGame(first);
+            
+            GameFrame.repoService.insertWarLog(first, second, point, gold, deadSoldiersWinner, deadSoldiersLoser);
+            return 1;
            
        }
-       else if(second.getTotalPower()>=first.getTotalPower()){
+       else {
            
            loseOfWinner = (double)first.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
            loseOfLoser = (double)second.getTotalPower()/(double)(first.getTotalPower() + second.getTotalPower());
            
             for (Integer value: GameFrame.repoService.getAllSoldiers(second.getKingdomID()).values()) {
                int numberOfSoldiersOfWinner = (int) (value * loseOfLoser);
+               deadSoldiersWinner += (value - numberOfSoldiersOfWinner);
                soldierWinnerIntList.add(numberOfSoldiersOfWinner);
                //System.out.println("numberofsoldierofwinner = " + numberOfSoldiersOfWinner+" "+second.getKingdomID());
                
             }
             for (Integer value: GameFrame.repoService.getAllSoldiers(first.getKingdomID()).values()) {
                int numberOfSoldiersOfLoser = (int) (value * loseOfWinner);
+               deadSoldiersLoser += (value - numberOfSoldiersOfLoser);
                soldierLoserIntList.add(numberOfSoldiersOfLoser);
                //System.out.println("numberofsoldierofloser = " + numberOfSoldiersOfLoser+" "+first.getKingdomID());
             }
@@ -117,9 +132,20 @@ public class Calc {
             GameFrame.repoService.updateSoldierNumbers(first, newAllSoldiersOfLoser);
             GameFrame.repoService.updateSoldierNumbers(second, newAllSoldiersOfWinner);
             
-           
-       }else{
+            
+            int point = deadSoldiersLoser * 2;//eklenecek olan point 
+            second.setPoint(point + second.getPoint());
+            //kazanana gold eklenecek
+            int gold = 20 * deadSoldiersWinner;//eklenecek olan gold
+            second.setGold(gold + second.getGold());
+             
+            //***** GAME FRAME UPDATE VIEWWWWW c********** 
+            //MainFrame.gf.startGame(second);
+            
+            GameFrame.repoService.insertWarLog(second, first, point, gold, deadSoldiersWinner, deadSoldiersLoser);
+            return 0;
            
        }
     }
+    
 }
