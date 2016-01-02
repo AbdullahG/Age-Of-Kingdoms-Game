@@ -16,7 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -353,19 +352,19 @@ public class RepoServiceImpl implements RepoService {
     }
     @Override
     public void insertWarLog(Kingdom winner, Kingdom loser, int point, int gold, int winner_soldier_loss, int loser_soldier_loss ){
-        String query = "insert into WAR_REGISTERS values(?,?,?,?,?,?,?,?)";
+        String query = "insert into WAR_REGISTERS(WINNER_ID,LOSER_ID,POINT,GOLD,WINNER_SOLDIER_LOSS,LOSER_SOLDIER_LOSS,WAR_DATE) values(?,?,?,?,?,?,?)";
         //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         java.util.Date date = new Date();
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setInt(1, 0);
-            stmt.setInt(2, winner.getKingdomID());
-            stmt.setInt(3, loser.getKingdomID());
-            stmt.setInt(4, point);
-            stmt.setInt(5, gold);
-            stmt.setInt(6, winner_soldier_loss);
-            stmt.setInt(7, loser_soldier_loss);
-            stmt.setDate(8, new java.sql.Date(date.getTime()));
+            
+            stmt.setInt(1, winner.getKingdomID());
+            stmt.setInt(2, loser.getKingdomID());
+            stmt.setInt(3, point);
+            stmt.setInt(4, gold);
+            stmt.setInt(5, winner_soldier_loss);
+            stmt.setInt(6, loser_soldier_loss);
+            stmt.setDate(7, new java.sql.Date(date.getTime()));
             
             stmt.executeUpdate(); 
             stmt.close();
